@@ -9,6 +9,11 @@ The backend for iWantToHelp platform
 * Node.js and yarn dependencies
   * https://guides.rubyonrails.org/getting_started.html#installing-node-js-and-yarn
 
+* Configuration
+
+  * Create `.env.development` and `.env.test` based on corresponding templates
+  * Update new created files with your corresponding values
+
 * Database creation & initialization
   * `rails db:setup`
 
