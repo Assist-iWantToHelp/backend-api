@@ -10,11 +10,12 @@
 /test/version_tmp/
 /tmp/
 
-# Used by dotenv library to load environment variables.
-# .env
-
 # Ignore Byebug command history file.
 .byebug_history
+
+# Ignore .env files
+.env.development
+.env.test
 
 ## Specific to RubyMotion:
 .dat*
@@ -34,10 +35,6 @@ build-iPhoneSimulator/
 /.bundle/
 /vendor/bundle
 /lib/bundler/man/
-
-# Ignore the default SQLite database.
-/db/*.sqlite3
-/db/*.sqlite3-journal
 
 # Ignore all logfiles and tempfiles.
 /log/*
