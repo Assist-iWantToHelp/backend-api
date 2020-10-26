@@ -20,3 +20,5 @@ The backend for iWantToHelp platform
 * Run application locally
   * `rails s`
   * check it: `localhost:3000`
+  * Volunteers: `localhost:3000/docs/volunteers`
+  * HelpSeekers: `localhost:3000/docs/help_seekers`
