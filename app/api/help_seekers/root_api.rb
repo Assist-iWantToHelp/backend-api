@@ -2,9 +2,11 @@ module HelpSeekers
   class RootApi < Grape::API
     format :json
 
-    # before { authenticate_client_app! }
+    rescue_from Grape::Knock::ForbiddenError do
+      error!('Forbidden', 403)
+    end
 
-    rescue_from Grape::Exceptions::ValidationErrors do |e|
+    rescue_from Grape::Exceptions::ValidationErrors do |_e|
       error!('Bad request', 400)
     end
 
@@ -12,11 +14,11 @@ module HelpSeekers
       error!('Not Found', 404)
     end
 
-    http_basic do |username, password|
-      ENV['SWAGGER_USERNAME'] == username && ENV['SWAGGER_PASSWORD'] == password
-    end
+    # http_basic do |username, password|
+    #   ENV['SWAGGER_USERNAME'] == username && ENV['SWAGGER_PASSWORD'] == password
+    # end
 
-    # mount ProfilesApi
+    # mount Common::AuthenticationApi
 
     add_swagger_documentation(
       format: :json,
