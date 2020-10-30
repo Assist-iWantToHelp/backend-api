@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_secure_password
-  has_many :needs
+  has_many :my_needs, class_name: 'Need', foreign_key: 'added_by_id'
+  has_many :chosen_needs, class_name: 'Need', foreign_key: 'chosen_by_id'
 
   validates :phone_number, presence: true, uniqueness: true
   validates :first_name, presence: true

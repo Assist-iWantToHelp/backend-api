@@ -1,5 +1,6 @@
 class Need < ApplicationRecord
-  belongs_to :user
+  belongs_to :added_by, class_name: 'User'
+  belongs_to :chosen_by, class_name: 'User', optional: true
 
   validates :description, presence: true
   validates :added_by, presence: true
