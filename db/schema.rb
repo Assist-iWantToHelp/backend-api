@@ -10,12 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_30_060333) do
+ActiveRecord::Schema.define(version: 2020_10_30_133109) do
+
+  create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "street_name"
+    t.string "city"
+    t.text "details"
+    t.string "postal_code"
+    t.string "coordinates"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "needs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.text "description"
     t.boolean "deleted", default: false
-    t.integer "state", default: 0
+    t.integer "status", default: 0
     t.text "contact_info"
     t.string "contact_phone_number"
     t.bigint "added_by_id", null: false
@@ -24,6 +34,65 @@ ActiveRecord::Schema.define(version: 2020_10_30_060333) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["added_by_id"], name: "index_needs_on_added_by_id"
     t.index ["chosen_by_id"], name: "index_needs_on_chosen_by_id"
+  end
+
+  create_table "notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.text "description"
+    t.integer "status", default: 0
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
+  create_table "reviews", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.integer "stars"
+    t.text "comment"
+    t.bigint "provided_by_id", null: false
+    t.bigint "given_to_id", null: false
+    t.bigint "need_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["given_to_id"], name: "index_reviews_on_given_to_id"
+    t.index ["need_id"], name: "index_reviews_on_need_id"
+    t.index ["provided_by_id"], name: "index_reviews_on_provided_by_id"
+  end
+
+  create_table "special_cases", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.text "description"
+    t.boolean "validated", default: false
+    t.boolean "deleted", default: false
+    t.integer "status", default: 0
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_special_cases_on_user_id"
+  end
+
+  create_table "suggestions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "email"
+    t.string "name"
+    t.text "message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "testimonials", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.text "message"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_testimonials_on_user_id"
+  end
+
+  create_table "user_special_cases", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.text "promotion_description"
+    t.bigint "special_case_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["special_case_id"], name: "index_user_special_cases_on_special_case_id"
+    t.index ["user_id"], name: "index_user_special_cases_on_user_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -36,8 +105,19 @@ ActiveRecord::Schema.define(version: 2020_10_30_060333) do
     t.integer "role"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "address_id", null: false
+    t.index ["address_id"], name: "index_users_on_address_id"
   end
 
   add_foreign_key "needs", "users", column: "added_by_id"
   add_foreign_key "needs", "users", column: "chosen_by_id"
+  add_foreign_key "notifications", "users"
+  add_foreign_key "reviews", "needs"
+  add_foreign_key "reviews", "users", column: "given_to_id"
+  add_foreign_key "reviews", "users", column: "provided_by_id"
+  add_foreign_key "special_cases", "users"
+  add_foreign_key "testimonials", "users"
+  add_foreign_key "user_special_cases", "special_cases"
+  add_foreign_key "user_special_cases", "users"
+  add_foreign_key "users", "addresses"
 end
