@@ -7,7 +7,8 @@ class User < ApplicationRecord
   validates :first_name, presence: true
   validates :last_name, presence: true
 
-  enum role: %i[help_seeker volunteer ngo admin]
+  # enum role: %i[help_seeker volunteer ngo admin]
+  enum role: { help_seeker: 0, volunteer: 1, ngo: 2, admin: 3 }
 
   def self.from_token_request(request)
     User.find_by(phone_number: request.params[:auth][:phone_number])

@@ -5,5 +5,5 @@ class Need < ApplicationRecord
   validates :description, presence: true
   validates :added_by, presence: true
 
-  enum status: %i[opened in_progres completed closed]
+  enum status: { opened: 0, in_progres: 1, completed: 2, closed: 3 }
 end

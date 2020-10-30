@@ -3,7 +3,7 @@ class CreateNeeds < ActiveRecord::Migration[6.0]
     create_table :needs do |t|
       t.text :description
       t.boolean :deleted, default: false
-      t.integer :state, default: 0
+      t.integer :status, default: 0
       t.text :contact_info
       t.string :contact_phone_number
       t.references :added_by, null: false
