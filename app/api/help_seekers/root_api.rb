@@ -27,7 +27,15 @@ module HelpSeekers
       info: { title: 'HelpSeekers API docs' },
       models: [],
       array_use_braces: true,
-      add_root: true
+      add_root: true,
+      security: [{ AuthBearerToken: [] }],
+      security_definitions: {
+        AuthBearerToken: {
+          type: 'apiKey',
+          name: 'Authorization',
+          in: 'header'
+        }
+      }
     )
   end
 end
