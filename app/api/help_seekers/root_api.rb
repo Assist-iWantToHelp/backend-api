@@ -6,7 +6,7 @@ module HelpSeekers
       error!('Forbidden', 403)
     end
 
-    rescue_from Grape::Exceptions::ValidationErrors do |_e|
+    rescue_from Grape::Exceptions::ValidationErrors do
       error!('Bad request', 400)
     end
 
@@ -18,7 +18,7 @@ module HelpSeekers
     #   ENV['SWAGGER_USERNAME'] == username && ENV['SWAGGER_PASSWORD'] == password
     # end
 
-    # mount Common::AuthenticationApi
+    mount NeedsApi
 
     add_swagger_documentation(
       format: :json,
