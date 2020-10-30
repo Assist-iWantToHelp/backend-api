@@ -18,7 +18,7 @@ module Common
       expose :contact_info
       expose :contact_phone_number
       expose :added_by, using: User
-      expose :created_by, using: User
+      expose :chosen_by, using: User, expose_nil: true
     end
   end
 end
