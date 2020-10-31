@@ -6,4 +6,6 @@ class Need < ApplicationRecord
   validates :added_by, presence: true
 
   enum status: { opened: 0, in_progres: 1, completed: 2, closed: 3 }
+
+  scope :opened, -> { where(status: statuses[:opened]) }
 end
