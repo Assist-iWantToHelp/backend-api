@@ -18,7 +18,7 @@ module Volunteers
     #   ENV['SWAGGER_USERNAME'] == username && ENV['SWAGGER_PASSWORD'] == password
     # end
 
-    # mount Common::AuthenticationApi
+    mount NeedsApi
 
     add_swagger_documentation(
       format: :json,
@@ -27,7 +27,15 @@ module Volunteers
       info: { title: 'Volunteers API docs' },
       models: [],
       array_use_braces: true,
-      add_root: true
+      add_root: true,
+      security: [{ AuthBearerToken: [] }],
+      security_definitions: {
+        AuthBearerToken: {
+          type: 'apiKey',
+          name: 'Authorization',
+          in: 'header'
+        }
+      }
     )
   end
 end
