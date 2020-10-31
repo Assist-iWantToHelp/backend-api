@@ -4,9 +4,6 @@ module Common
       expose :phone_number
       expose :first_name
       expose :last_name
-      expose :email
-      expose :cif
-      expose :role
     end
 
     class Need < Grape::Entity
@@ -15,10 +12,6 @@ module Common
       expose :id, documentation: { type: Integer }
       expose :description
       expose :state
-      expose :contact_info
-      expose :contact_phone_number
-      expose :added_by, using: User
-      expose :chosen_by, using: User, expose_nil: true
     end
   end
 end
