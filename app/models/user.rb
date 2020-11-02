@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :notifications
   has_one :testimonial
   has_many :user_special_cases
+  has_many :special_cases
   belongs_to :address
 
   validates :phone_number, presence: true, uniqueness: true
