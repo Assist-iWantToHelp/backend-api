@@ -6,7 +6,6 @@ class Need < ApplicationRecord
 
   has_many :reviews
 
-  validates :added_by, presence: true
   validates :description, presence: true
 
   scope :opened, -> { where(status: statuses[:opened]) }
