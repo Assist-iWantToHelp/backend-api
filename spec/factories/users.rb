@@ -11,20 +11,20 @@ FactoryBot.define do
     address { association :address, user: instance }
 
     trait :as_help_seeker do
-      role { 0 }
+      role { User.roles[:help_seeker] }
     end
 
     trait :as_volunteer do
-      role { 1 }
+      role { User.roles[:volunteer] }
     end
 
     trait :as_ngo do
       cif { Faker::Number.number(digits: 6) }
-      role { 2 }
+      role { User.roles[:ngo] }
     end
 
     trait :as_admin do
-      role { 3 }
+      role { User.roles[:admin] }
     end
   end
 end

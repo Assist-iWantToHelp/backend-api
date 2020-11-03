@@ -6,6 +6,6 @@ FactoryBot.define do
     city { Faker::Address.city }
     county { Faker::Address.state }
     postal_code { Faker::Address.zip }
-    coordinates { "#{Faker::Address.longitude}, #{Faker::Address.latitude}" }
+    coordinates { "#{Faker::Address.latitude}, #{Faker::Address.longitude}" }
   end
 end
