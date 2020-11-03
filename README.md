@@ -22,3 +22,14 @@ The backend for iWantToHelp platform
   * check it: `localhost:3000`
   * Volunteers: `localhost:3000/docs/volunteers`
   * HelpSeekers: `localhost:3000/docs/help_seekers`
+
+* Heroku deployment
+  * `heroku login`
+  * `git config --list --local | grep heroku` - verifies that the remote is added to your project
+  * `git push heroku main` - pushes `main` branch to Heroku
+  * `heroku run rake db:migrate` - applies the migrations
+  * `heroku ps:scale web=1` - checks that the dyno is running
+  * `heroku ps` - checks the state of the app's dyno
+  * `heroku open` - visits the app in the browser
+  * `heroku logs` - checks the logs
+  * `heroku run rails console` - runs the Rails console on server
