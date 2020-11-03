@@ -24,8 +24,9 @@ module HelpSeekers
       params do
         with(documentation: { in: 'body' }) do
           requires :description, type: String, desc: 'Description', allow_blank: false
-          optional :contact_info, type: String, desc: 'Contact info', allow_blank: false
-          optional :contact_phone_number, type: String, desc: 'Contact phone number', allow_blank: false
+          # to discuscc: a HelpSeeker should be able to add a need for another person?
+          # optional :contact_info, type: String, desc: 'Contact info', allow_blank: false
+          # optional :contact_phone_number, type: String, desc: 'Contact phone number', allow_blank: false
         end
       end
       post do
@@ -63,23 +64,31 @@ module HelpSeekers
         end
         put do
           need = current_user.my_needs.find(params[:id])
-          need.update!(params)
-          present need, with: Entities::Need
+
+          if need.opened?
+            need.update!(params)
+            present need, with: Entities::Need
+          else
+            status :bad_request
+          end
         end
 
         desc 'Delete need' do
           tags %w[needs]
           http_codes [
             { code: 204, message: 'No content' },
-            { code: 400, message: 'Bad request' },
+            { code: 400, message: 'Need is not opened anymore' },
             { code: 404, message: 'Need not found' }
           ]
         end
         delete do
           need = current_user.my_needs.find(params[:id])
-          need.update!(deleted: true)
-
-          status :no_content
+          if need.opened?
+            need.update!(deleted: true)
+            status :no_content
+          else
+            status :bad_request
+          end
         end
       end
     end
