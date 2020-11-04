@@ -24,9 +24,6 @@ module HelpSeekers
       params do
         with(documentation: { in: 'body' }) do
           requires :description, type: String, desc: 'Description', allow_blank: false
-          # to discuscc: a HelpSeeker should be able to add a need for another person?
-          # optional :contact_info, type: String, desc: 'Contact info', allow_blank: false
-          # optional :contact_phone_number, type: String, desc: 'Contact phone number', allow_blank: false
         end
       end
       post do
@@ -70,6 +67,7 @@ module HelpSeekers
             present need, with: Entities::Need
           else
             status :bad_request
+            error!('Need is not opened anymore', 400)
           end
         end
 
@@ -88,6 +86,7 @@ module HelpSeekers
             status :no_content
           else
             status :bad_request
+            error!('Need is not opened anymore', 400)
           end
         end
       end

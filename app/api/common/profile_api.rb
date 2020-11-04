@@ -1,25 +1,24 @@
-module HelpSeekers
-  class UsersApi < Grape::API
+module Common
+  class ProfileApi < Grape::API
     use Grape::Knock::Authenticable
 
-    resource :users do
+    resource :profile do
       desc 'Get my profile' do
-        tags %w[users]
+        tags %w[profile]
         http_codes [
-          { code: 200, model: Entities::HelpSeeker, message: 'Profile overview' }
+          { code: 200, model: Entities::Profile, message: 'Profile overview' }
         ]
       end
       get do
         profile = current_user
-        present profile, with: Entities::HelpSeeker
+        present profile, with: Entities::Profile
       end
 
       desc 'Update profile' do
-        tags %w[users]
+        tags %w[profile]
         http_codes [
-          { code: 200, model: Entities::HelpSeeker, message: 'Profile update' },
-          { code: 400, message: 'Params are invalid' },
-          { code: 404, message: 'Profile not found' }
+          { code: 200, model: Entities::Profile, message: 'Profile update' },
+          { code: 400, message: 'Params are invalid' }
         ]
       end
       params do
@@ -27,12 +26,13 @@ module HelpSeekers
           optional :phone_number, type: String, desc: 'Phone number', allow_blank: false
           optional :first_name, type: String, desc: 'First name', allow_blank: false
           optional :last_name, type: String, desc: 'Last name', allow_blank: false
+          optional :email, type: String, desc: 'Email', allow_blank: false
         end
       end
       put do
         profile = current_user
         profile.update!(params)
-        present profile, with: Entities::HelpSeeker
+        present profile, with: Entities::Profile
       end
     end
   end

@@ -6,6 +6,10 @@ module Common
       expose :last_name
     end
 
+    class Profile < User
+      expose :email
+    end
+
     class Need < Grape::Entity
       root :needs, :need
 

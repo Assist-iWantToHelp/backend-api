@@ -23,7 +23,7 @@ module Volunteers
           ]
         end
         get do
-          need = Need.okbpened.where.not(added_by: current_user).find(params[:id])
+          need = Need.opened.where.not(added_by: current_user).find(params[:id])
           present need, with: Entities::Need
         end
 
@@ -48,6 +48,7 @@ module Volunteers
             present need, with: Entities::Need
           else
             status :conflict
+            error!('Need is chosen already', 409)
           end
         end
       end
@@ -119,6 +120,7 @@ module Volunteers
               present need, with: Entities::Need
             else
               status :bad_request
+              error!('Need is not opened anymore', 400)
             end
           end
 
@@ -137,6 +139,7 @@ module Volunteers
               status :no_content
             else
               status :bad_request
+              error!('Need is not opened anymore', 400)
             end
           end
         end
