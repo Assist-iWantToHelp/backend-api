@@ -2,6 +2,8 @@ module HelpSeekers
   class RootApi < Grape::API
     format :json
 
+    helpers HelpSeekers::Helpers
+
     rescue_from Grape::Knock::ForbiddenError do
       error!('Forbidden', 403)
     end
