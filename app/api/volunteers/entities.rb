@@ -18,5 +18,11 @@ module Volunteers
       expose :contact_phone_number
       expose :chosen_by, using: Volunteer, expose_nil: true
     end
+
+    class Testimonial < Grape::Entity
+      root :testimonials, :testimonial
+
+      expose :message
+    end
   end
 end
