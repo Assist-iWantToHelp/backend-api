@@ -19,6 +19,7 @@ module HelpSeekers
     # end
 
     mount NeedsApi
+    mount UsersApi
 
     add_swagger_documentation(
       format: :json,

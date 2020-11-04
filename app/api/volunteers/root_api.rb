@@ -20,6 +20,7 @@ module Volunteers
 
     mount NeedsApi
     mount TestimonialsApi
+    mount UsersApi
 
     add_swagger_documentation(
       format: :json,
