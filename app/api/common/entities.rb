@@ -15,7 +15,7 @@ module Common
 
       expose :id, documentation: { type: Integer }
       expose :description
-      expose :state
+      expose :status
     end
   end
 end
