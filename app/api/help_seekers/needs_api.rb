@@ -91,6 +91,42 @@ module HelpSeekers
             error!('Need is not opened anymore', 400)
           end
         end
+
+        desc 'Confirm completed need' do
+          tags %w[needs]
+          http_codes [
+            { code: 201, model: Entities::Need, message: 'Need confirmed and review added' },
+            { code: 400, message: 'Params are invalid' },
+            { code: 404, message: 'Need not found' },
+            { code: 409, message: 'Conflict' }
+          ]
+        end
+        params do
+          with(documentation: { in: 'body' }) do
+            requires :review, type: Hash, allow_blank: false do
+              requires :stars, type: Integer, values: 1..5, allow_blank: false
+              optional :comment, type: String, allow_blank: false
+            end
+          end
+        end
+        post do
+          need = current_user.my_needs.includes(:reviews).find(params[:id])
+
+          if need.completed? && need.chosen_by
+            review_params = params[:review].merge(
+              provided_by_id: current_user.id,
+              given_to_id: need.chosen_by.id
+            )
+
+            need.reviews.create!(review_params)
+            need.closed!
+
+            present need, with: Entities::Need
+          else
+            status :bad_request
+            error!('Need is not completed', 400)
+          end
+        end
       end
     end
   end
