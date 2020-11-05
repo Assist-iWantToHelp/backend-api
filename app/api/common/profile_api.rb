@@ -2,6 +2,8 @@ module Common
   class ProfileApi < Grape::API
     use Grape::Knock::Authenticable
 
+    before { authorize_user_role! }
+
     resource :profile do
       desc 'Get my profile' do
         tags %w[profile]

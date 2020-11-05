@@ -2,6 +2,8 @@ module Volunteers
   class RootApi < Grape::API
     format :json
 
+    helpers Volunteers::Helpers
+
     rescue_from Grape::Knock::ForbiddenError do
       error!('Forbidden', 403)
     end

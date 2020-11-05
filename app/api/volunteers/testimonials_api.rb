@@ -2,6 +2,8 @@ module Volunteers
   class TestimonialsApi < Grape::API
     use Grape::Knock::Authenticable
 
+    before { authorize_user_role! }
+
     resource :testimonials do
       desc 'Add testimonial' do
         tags %w[testimonials]

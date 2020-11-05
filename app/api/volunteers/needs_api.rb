@@ -2,6 +2,8 @@ module Volunteers
   class NeedsApi < Grape::API
     use Grape::Knock::Authenticable
 
+    before { authorize_user_role! }
+
     resource :needs do
       desc "Other's needs" do
         tags %w[needs]
