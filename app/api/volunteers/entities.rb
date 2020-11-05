@@ -11,6 +11,7 @@ module Volunteers
 
     class Need < Common::Entities::Need
       expose :added_by, using: HelpSeeker, expose_nil: true
+      expose :reviews, using: User, expose_nil: true
     end
 
     class RecommendedNeed < Need
