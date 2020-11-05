@@ -17,5 +17,14 @@ module Common
       expose :description
       expose :status
     end
+
+    class Review < Grape::Entity
+      root :reviews, :review
+
+      expose :stars, documentation: { type: Integer }
+      expose :comment
+      expose :provided_by, using: User, expose_nil: true
+      expose :given_to, using: User, expose_nil: true
+    end
   end
 end
