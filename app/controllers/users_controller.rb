@@ -4,16 +4,14 @@ class UsersController < ApplicationController
   skip_before_action :verify_authenticity_token, raise: false
 
   def create
-    begin
-      @user = User.new(user_params)
-      if @user.save
-        head :created
-      else
-        render json: @user.errors.messages, status: :unprocessable_entity
-      end
-    rescue
-      return render json: {'role': ['is not a valid role']}, status: :unprocessable_entity
+    @user = User.new(user_params)
+    if @user.save
+      head :created
+    else
+      render json: @user.errors.messages, status: :unprocessable_entity
     end
+  rescue StandardError
+    render json: { 'role': ['is not a valid role'] }, status: :unprocessable_entity
   end
 
   private
@@ -29,6 +27,6 @@ class UsersController < ApplicationController
       :password,
       :password_confirmation,
       :address_id
-      )
+    )
   end
 end
