@@ -45,6 +45,8 @@ group :test do
 end
 
 group :production do
+  gem 'factory_bot_rails'
+  gem 'faker'
   gem 'pg'
 end
 
