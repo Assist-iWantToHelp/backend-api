@@ -24,7 +24,9 @@ The backend for iWantToHelp platform
   * HelpSeekers: `localhost:3000/docs/help_seekers`
 
 * Heroku deployment
+  * [`sudo snap install heroku`] - install Heroku
   * `heroku login`
+  * `heroku git:remote -a iwanttohelp` - Add remote to the local repository
   * `git config --list --local | grep heroku` - verifies that the remote is added to your project
   * `git push heroku main` - pushes `main` branch to Heroku
   * `heroku run rake db:migrate` - applies the migrations
