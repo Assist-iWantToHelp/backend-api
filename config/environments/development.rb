@@ -3,6 +3,14 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  config.allowed_cors_origins = [
+    %r{\Ahttp(s?)://(.*?)\.herokuapp\.com\z},
+    %r{\Ahttp(s?)://localhost(:.+)?\z},
+    %r{\Ahttp(s?)://127.0.0.1(:.+)?\z},
+    %r{\Ahttp(s?)://0.0.0.0(:.+)?\z},
+    %r{\Ahttp(s)?://(.*?)\.ngrok\.io\z}
+  ]
+
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
