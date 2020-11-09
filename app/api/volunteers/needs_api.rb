@@ -63,10 +63,26 @@ module Volunteers
             { code: 409, message: 'Need is not in progress' }
           ]
         end
+        params do
+          with(documentation: { in: 'body' }) do
+            optional :review, type: Hash, allow_blank: false do
+              requires :stars, type: Integer, values: 1..5, allow_blank: false
+              optional :comment, type: String, allow_blank: false
+            end
+          end
+        end
         post :completed do
           need = current_user.chosen_needs.find(params[:id])
 
           if need.in_progress?
+            if params[:review]
+              review_params = params[:review].merge(
+                provided_by_id: current_user.id,
+                given_to_id: need.added_by.id
+              )
+              need.reviews.create!(review_params)
+            end
+
             need.completed!
             present need, with: Entities::Need
           else
@@ -166,7 +182,7 @@ module Volunteers
             end
           end
 
-          desc 'Confirm completed recommended need' do
+          desc 'Confirm completed recommended need (close)' do
             tags %w[recommended_needs]
             http_codes [
               { code: 201, model: Entities::Need, message: 'Need confirmed and review added' },
@@ -183,7 +199,7 @@ module Volunteers
               end
             end
           end
-          post do
+          post :close do
             need = current_user.my_needs.includes(:reviews).find(params[:id])
 
             if need.completed? && need.chosen_by
