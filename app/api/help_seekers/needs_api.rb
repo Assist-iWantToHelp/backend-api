@@ -92,7 +92,7 @@ module HelpSeekers
           end
         end
 
-        desc 'Confirm completed need' do
+        desc 'Confirm completed need (close)' do
           tags %w[needs]
           http_codes [
             { code: 201, model: Entities::Need, message: 'Need confirmed and review added' },
@@ -109,7 +109,7 @@ module HelpSeekers
             end
           end
         end
-        post do
+        post :close do
           need = current_user.my_needs.includes(:reviews).find(params[:id])
 
           if need.completed? && need.chosen_by
