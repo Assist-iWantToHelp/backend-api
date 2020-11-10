@@ -10,6 +10,8 @@ class UsersController < ApplicationController
     else
       render json: @user.errors.messages, status: :unprocessable_entity
     end
+  rescue StandardError
+    render json: { 'role': ['is not a valid role'] }, status: :unprocessable_entity
   end
 
   private
