@@ -26,7 +26,14 @@ class UsersController < ApplicationController
       :role,
       :password,
       :password_confirmation,
-      :address_id
+      address_attributes: [
+        :street_name,
+        :city,
+        :county,
+        :postal_code,
+        :coordinates,
+        :details
+      ]
     )
   end
 end
