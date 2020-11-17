@@ -6,6 +6,8 @@ Rails.application.routes.draw do
     post '/signin', to: 'user_token#create'
     post '/signup', to: 'users#create'
   end
+
+  mount Common::RootApi => '/public/api/v1'
   mount Volunteers::RootApi => '/volunteers/api/v1'
   mount HelpSeekers::RootApi => '/help_seekers/api/v1'
 end

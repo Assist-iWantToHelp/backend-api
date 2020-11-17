@@ -26,5 +26,11 @@ module Common
       expose :provided_by, using: User, expose_nil: true
       expose :given_to, using: User, expose_nil: true
     end
+
+    class Suggestion < Grape::Entity
+      expose :email
+      expose :name
+      expose :message
+    end
   end
 end
