@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_30_133109) do
+ActiveRecord::Schema.define(version: 2020_11_10_204757) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "street_name"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 2020_10_30_133109) do
     t.string "coordinates"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
   create_table "needs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -106,8 +108,6 @@ ActiveRecord::Schema.define(version: 2020_10_30_133109) do
     t.integer "role"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "address_id", null: false
-    t.index ["address_id"], name: "index_users_on_address_id"
   end
 
   add_foreign_key "needs", "users", column: "added_by_id"
@@ -120,5 +120,4 @@ ActiveRecord::Schema.define(version: 2020_10_30_133109) do
   add_foreign_key "testimonials", "users"
   add_foreign_key "user_special_cases", "special_cases"
   add_foreign_key "user_special_cases", "users"
-  add_foreign_key "users", "addresses"
 end

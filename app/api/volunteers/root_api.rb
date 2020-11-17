@@ -8,7 +8,7 @@ module Volunteers
       error!('Forbidden', 403)
     end
 
-    rescue_from Grape::Exceptions::ValidationErrors do |_e|
+    rescue_from Grape::Exceptions::ValidationErrors do
       error!('Bad request', 400)
     end
 

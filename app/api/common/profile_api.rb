@@ -29,11 +29,21 @@ module Common
           optional :first_name, type: String, desc: 'First name', allow_blank: false
           optional :last_name, type: String, desc: 'Last name', allow_blank: false
           optional :email, type: String, desc: 'Email', allow_blank: false
+          optional :address, type: Hash do
+            optional :street_name, type: String, allow_blank: false
+            optional :city, type: String, allow_blank: false
+            optional :county, type: String, allow_blank: false
+            optional :postal_code, type: String, allow_blank: false
+            optional :coordinates, type: String, allow_blank: false
+            optional :details, type: String, allow_blank: false
+          end
         end
       end
+      route_setting :aliases, address: :address_attributes
+
       put do
         profile = current_user
-        profile.update!(params)
+        profile.update!(permitted_params)
         present profile, with: Entities::Profile
       end
     end
