@@ -83,6 +83,7 @@ module Volunteers
               need.reviews.create!(review_params)
             end
 
+            need.update!(status_updated_at: DateTime.now, updated_by: current_user.id)
             need.completed!
             present need, with: Entities::Need
           else
@@ -155,6 +156,8 @@ module Volunteers
             need = current_user.my_needs.find(params[:id])
 
             if need.opened?
+              params[:status_updated_at] = DateTime.now
+              params[:updated_by] = current_user.id
               need.update!(params)
               present need, with: Entities::Need
             else
@@ -208,6 +211,7 @@ module Volunteers
                 given_to_id: need.chosen_by.id
               )
 
+              need.update!(status_updated_at: DateTime.now, updated_by: current_user.id)
               need.reviews.create!(review_params)
               need.closed!
 
