@@ -114,7 +114,6 @@ module HelpSeekers
         post :close do
           need = current_user.my_needs.includes(:reviews).find(params[:id])
 
-          debugger
           if need.completed? && need.chosen_by
             review_params = params[:review].merge(
               provided_by_id: current_user.id,
@@ -122,8 +121,7 @@ module HelpSeekers
             )
 
             need.reviews.create!(review_params)
-            need.closed!
-            need.update!(status_updated_at: DateTime.now, updated_by: current_user.id)
+            need.update!(status: "closed", status_updated_at: DateTime.now, updated_by: current_user.id)
 
             present need, with: Entities::Need
           else

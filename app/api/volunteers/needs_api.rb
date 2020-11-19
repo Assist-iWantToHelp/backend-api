@@ -83,8 +83,7 @@ module Volunteers
               need.reviews.create!(review_params)
             end
 
-            need.update!(status_updated_at: DateTime.now, updated_by: current_user.id)
-            need.completed!
+            need.update!(status: "completed", status_updated_at: DateTime.now, updated_by: current_user.id)
             present need, with: Entities::Need
           else
             status :bad_request
@@ -211,9 +210,8 @@ module Volunteers
                 given_to_id: need.chosen_by.id
               )
 
-              need.update!(status_updated_at: DateTime.now, updated_by: current_user.id)
+              need.update!(status: "closed", status_updated_at: DateTime.now, updated_by: current_user.id)
               need.reviews.create!(review_params)
-              need.closed!
 
               present need, with: Entities::Need
             else

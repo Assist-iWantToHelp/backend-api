@@ -16,6 +16,8 @@ module Common
       expose :id, documentation: { type: Integer }
       expose :description
       expose :status
+      expose :status_updated_at
+      expose :updated_by
     end
 
     class Review < Grape::Entity

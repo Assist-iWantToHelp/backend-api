@@ -12,16 +12,12 @@ module Volunteers
     class Need < Common::Entities::Need
       expose :added_by, using: HelpSeeker, expose_nil: true
       expose :reviews, using: Common::Entities::Review, expose_nil: true
-      expose :status_updated_at
-      expose :updated_by
     end
 
     class RecommendedNeed < Need
       expose :contact_info
       expose :contact_phone_number
       expose :chosen_by, using: Volunteer, expose_nil: true
-      expose :status_updated_at
-      expose :updated_by
     end
 
     class Testimonial < Grape::Entity
