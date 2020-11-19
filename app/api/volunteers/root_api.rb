@@ -20,9 +20,10 @@ module Volunteers
     #   ENV['SWAGGER_USERNAME'] == username && ENV['SWAGGER_PASSWORD'] == password
     # end
 
+    mount Common::ProfileApi
+    mount HelpedPeopleApi
     mount NeedsApi
     mount TestimonialsApi
-    mount Common::ProfileApi
 
     add_swagger_documentation(
       format: :json,
