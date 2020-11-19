@@ -65,8 +65,8 @@ module HelpSeekers
           need = current_user.my_needs.find(params[:id])
 
           if need.opened?
-            params[:status_updated_at] = DateTime.now
-            params[:updated_by] = current_user.id
+            params[:status_updated_at] = DateTime.current
+            params[:updated_by] = current_user
             need.update!(params)
             present need, with: Entities::Need
           else
@@ -86,7 +86,7 @@ module HelpSeekers
         delete do
           need = current_user.my_needs.find(params[:id])
           if need.opened?
-            need.update!(deleted: true)
+            need.update!(deleted: true, updated_by: current_user, status_updated_at: DateTime.current)
             status :no_content
           else
             status :bad_request
@@ -121,7 +121,7 @@ module HelpSeekers
             )
 
             need.reviews.create!(review_params)
-            need.update!(status: Need.statuses[:closed], status_updated_at: DateTime.now, updated_by: current_user.id)
+            need.update!(status: Need.statuses[:closed], status_updated_at: DateTime.current, updated_by: current_user)
 
             present need, with: Entities::Need
           else

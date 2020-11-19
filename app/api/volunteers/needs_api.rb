@@ -44,7 +44,9 @@ module Volunteers
           if need.chosen_by.blank?
             need.update_attributes(
               status: Need.statuses[:in_progress],
-              chosen_by: current_user
+              chosen_by: current_user,
+              updated_by: current_user,
+              status_updated_at: DateTime.current
             )
             # TODO: - create a service object to send notification
             present need, with: Entities::Need
@@ -85,8 +87,8 @@ module Volunteers
 
             need.update!(
               status: Need.statuses[:completed],
-              status_updated_at: DateTime.now,
-              updated_by: current_user.id
+              status_updated_at: DateTime.current,
+              updated_by: current_user
             )
             present need, with: Entities::Need
           else
@@ -159,8 +161,8 @@ module Volunteers
             need = current_user.my_needs.find(params[:id])
 
             if need.opened?
-              params[:status_updated_at] = DateTime.now
-              params[:updated_by] = current_user.id
+              params[:status_updated_at] = DateTime.current
+              params[:updated_by] = current_user
               need.update!(params)
               present need, with: Entities::Need
             else
@@ -180,7 +182,7 @@ module Volunteers
           delete do
             need = current_user.my_needs.find(params[:id])
             if need.opened?
-              need.update!(deleted: true)
+              need.update!(deleted: true, updated_by: current_user, status_updated_at: DateTime.current)
               status :no_content
             else
               status :bad_request
@@ -214,7 +216,11 @@ module Volunteers
                 given_to_id: need.chosen_by.id
               )
 
-              need.update!(status: Need.statuses[:closed], status_updated_at: DateTime.now, updated_by: current_user.id)
+              need.update!(
+                status: Need.statuses[:closed],
+                status_updated_at: DateTime.current,
+                updated_by: current_user
+              )
               need.reviews.create!(review_params)
 
               present need, with: Entities::Need
