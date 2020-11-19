@@ -34,9 +34,10 @@ ActiveRecord::Schema.define(version: 2020_11_17_075835) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "status_updated_at"
-    t.integer "updated_by"
+    t.bigint "user_id", null: false
     t.index ["added_by_id"], name: "index_needs_on_added_by_id"
     t.index ["chosen_by_id"], name: "index_needs_on_chosen_by_id"
+    t.index ["user_id"], name: "index_needs_on_user_id"
   end
 
   create_table "notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -112,6 +113,7 @@ ActiveRecord::Schema.define(version: 2020_11_17_075835) do
     t.index ["address_id"], name: "index_users_on_address_id"
   end
 
+  add_foreign_key "needs", "users"
   add_foreign_key "needs", "users", column: "added_by_id"
   add_foreign_key "needs", "users", column: "chosen_by_id"
   add_foreign_key "notifications", "users"

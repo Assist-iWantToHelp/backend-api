@@ -121,8 +121,8 @@ module HelpSeekers
             )
 
             need.reviews.create!(review_params)
-            need.update!(status: "closed", status_updated_at: DateTime.now, updated_by: current_user.id)
-
+            need.update!(status: Need.statuses[:closed], status_updated_at: DateTime.now, updated_by: current_user.id)
+            
             present need, with: Entities::Need
           else
             status :bad_request
