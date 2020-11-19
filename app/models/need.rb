@@ -3,11 +3,20 @@ class Need < ApplicationRecord
 
   belongs_to :added_by, class_name: 'User'
   belongs_to :chosen_by, class_name: 'User', optional: true
-  belongs_to :updated_by, class_name: 'User'
+  belongs_to :updated_by, class_name: 'User', optional: true
 
   has_many :reviews
 
   validates :description, presence: true
 
+  before_save :set_status_updates
+
   scope :opened, -> { where(status: statuses[:opened]) }
+
+  private
+
+  def set_status_updates
+    self.updated_by ||= added_by
+    self.status_updated_at ||= DateTime.current
+  end
 end

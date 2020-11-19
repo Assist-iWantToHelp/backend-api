@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 2020_11_17_075835) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "status_updated_at"
-    t.bigint "updated_by_id", null: false
+    t.bigint "updated_by_id"
     t.index ["added_by_id"], name: "index_needs_on_added_by_id"
     t.index ["chosen_by_id"], name: "index_needs_on_chosen_by_id"
     t.index ["updated_by_id"], name: "index_needs_on_updated_by_id"

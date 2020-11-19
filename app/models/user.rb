@@ -8,8 +8,8 @@ class User < ApplicationRecord
   has_one :testimonial
 
   has_many :my_needs, class_name: 'Need', foreign_key: 'added_by_id'
-  has_many :updated_needs, class_name: 'Need', foreign_key: 'updated_by_id'
   has_many :chosen_needs, class_name: 'Need', foreign_key: 'chosen_by_id'
+  has_many :updated_needs, class_name: 'Need', foreign_key: 'updated_by_id'
 
   has_many :provided_reviews, class_name: 'Review', foreign_key: 'provided_by_id'
   has_many :given_reviews, class_name: 'Review', foreign_key: 'given_to_id'
