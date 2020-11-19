@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 2020_11_17_075835) do
     t.string "coordinates"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
   create_table "needs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -34,10 +36,10 @@ ActiveRecord::Schema.define(version: 2020_11_17_075835) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "status_updated_at"
-    t.bigint "user_id", null: false
+    t.bigint "updated_by_id", null: false
     t.index ["added_by_id"], name: "index_needs_on_added_by_id"
     t.index ["chosen_by_id"], name: "index_needs_on_chosen_by_id"
-    t.index ["user_id"], name: "index_needs_on_user_id"
+    t.index ["updated_by_id"], name: "index_needs_on_updated_by_id"
   end
 
   create_table "notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -109,13 +111,11 @@ ActiveRecord::Schema.define(version: 2020_11_17_075835) do
     t.integer "role"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "address_id", null: false
-    t.index ["address_id"], name: "index_users_on_address_id"
   end
 
-  add_foreign_key "needs", "users"
   add_foreign_key "needs", "users", column: "added_by_id"
   add_foreign_key "needs", "users", column: "chosen_by_id"
+  add_foreign_key "needs", "users", column: "updated_by_id"
   add_foreign_key "notifications", "users"
   add_foreign_key "reviews", "needs"
   add_foreign_key "reviews", "users", column: "given_to_id"
@@ -124,5 +124,4 @@ ActiveRecord::Schema.define(version: 2020_11_17_075835) do
   add_foreign_key "testimonials", "users"
   add_foreign_key "user_special_cases", "special_cases"
   add_foreign_key "user_special_cases", "users"
-  add_foreign_key "users", "addresses"
 end

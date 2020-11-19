@@ -6,8 +6,18 @@ module Common
       expose :last_name
     end
 
+    class Address < Grape::Entity
+      expose :street_name
+      expose :city
+      expose :county
+      expose :postal_code
+      expose :coordinates
+      expose :details
+    end
+
     class Profile < User
       expose :email
+      expose :address, using: Address, expose_nil: true
     end
 
     class Need < Grape::Entity
@@ -27,6 +37,12 @@ module Common
       expose :comment
       expose :provided_by, using: User, expose_nil: true
       expose :given_to, using: User, expose_nil: true
+    end
+
+    class Suggestion < Grape::Entity
+      expose :email
+      expose :name
+      expose :message
     end
   end
 end

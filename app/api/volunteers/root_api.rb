@@ -8,7 +8,7 @@ module Volunteers
       error!('Forbidden', 403)
     end
 
-    rescue_from Grape::Exceptions::ValidationErrors do |_e|
+    rescue_from Grape::Exceptions::ValidationErrors do
       error!('Bad request', 400)
     end
 
@@ -20,9 +20,10 @@ module Volunteers
     #   ENV['SWAGGER_USERNAME'] == username && ENV['SWAGGER_PASSWORD'] == password
     # end
 
+    mount Common::ProfileApi
+    mount HelpedPeopleApi
     mount NeedsApi
     mount TestimonialsApi
-    mount Common::ProfileApi
 
     add_swagger_documentation(
       format: :json,

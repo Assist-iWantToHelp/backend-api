@@ -3,7 +3,7 @@ class User < ApplicationRecord
 
   enum role: { help_seeker: 0, volunteer: 1, ngo: 2, admin: 3 }
 
-  belongs_to :address
+  has_one :address
 
   has_one :testimonial
 
@@ -20,6 +20,8 @@ class User < ApplicationRecord
 
   validates :phone_number, presence: true, uniqueness: true
   validates :first_name, presence: true
+
+  accepts_nested_attributes_for :address, update_only: true
 
   def self.from_token_request(request)
     User.find_by(phone_number: request.params[:auth][:phone_number])
