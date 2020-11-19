@@ -12,7 +12,7 @@ module HelpSeekers
         ]
       end
       get do
-        volunteers = current_user.my_needs.includes(:chosen_by).map(&:chosen_by)
+        volunteers = current_user.my_needs.includes(:chosen_by).map(&:chosen_by).uniq
         present volunteers, with: Entities::Volunteer
       end
     end
