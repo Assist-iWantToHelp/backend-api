@@ -6,7 +6,11 @@ module Common
       error!('Not Found', 404)
     end
 
+    mount NeedsApi
+    mount SpecialCasesApi
     mount SuggestionsApi
+    mount TestimonialsApi
+    mount VolunteersApi
 
     add_swagger_documentation(
       format: :json,
