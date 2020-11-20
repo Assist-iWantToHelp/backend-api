@@ -22,6 +22,8 @@ class User < ApplicationRecord
 
   accepts_nested_attributes_for :address, update_only: true
 
+  scope :volunteers, -> { where(role: %i[volunteer ngo]) }
+
   def self.from_token_request(request)
     User.find_by(phone_number: request.params[:auth][:phone_number])
   end
