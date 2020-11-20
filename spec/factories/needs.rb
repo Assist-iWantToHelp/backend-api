@@ -8,6 +8,8 @@ FactoryBot.define do
     trait :in_progress do
       chosen_by { FactoryBot.create(:user, :as_volunteer) }
       status { Need.statuses[:in_progress] }
+      updated_by { chosen_by }
+      status_updated_at { DateTime.current }
     end
   end
 end
