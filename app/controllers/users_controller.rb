@@ -5,8 +5,15 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+
     if @user.save
-      head :created
+      response = {
+        user: @user.as_json(
+          include: :address,
+          except: %i[created_at updated_at password_digest]
+        )
+      }
+      render json: response, status: :created
     else
       render json: @user.errors.messages, status: :unprocessable_entity
     end
