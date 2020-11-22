@@ -23,6 +23,7 @@ module Volunteers
     class Testimonial < Grape::Entity
       root :testimonials, :testimonial
 
+      expose :id, documentation: { type: Integer }
       expose :message
     end
   end

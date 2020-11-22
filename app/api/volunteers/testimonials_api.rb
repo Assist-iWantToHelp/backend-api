@@ -20,6 +20,23 @@ module Volunteers
         testimonial = current_user.testimonial.create!(params)
         present testimonial, with: Entities::Testimonial
       end
+
+      desc 'Get testimonial' do
+        tags %w[testimonials]
+        http_codes [
+          { code: 200, model: Entities::Testimonial, message: 'Testimonial details' },
+          { code: 404, message: 'Need not found' }
+        ]
+      end
+      get do
+        testimonial = current_user.testimonial
+
+        if testimonial
+          present testimonial, with: Entities::Testimonial
+        else
+          error!('Not Found', 404)
+        end
+      end
     end
   end
 end
