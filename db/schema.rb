@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_22_141324) do
+ActiveRecord::Schema.define(version: 2020_11_22_150020) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "street_name"
@@ -37,8 +37,11 @@ ActiveRecord::Schema.define(version: 2020_11_22_141324) do
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "status_updated_at"
     t.bigint "updated_by_id"
-    t.text "contact_info"
+    t.string "contact_first_name"
+    t.string "contact_last_name"
+    t.bigint "address_id"
     t.index ["added_by_id"], name: "index_needs_on_added_by_id"
+    t.index ["address_id"], name: "index_needs_on_address_id"
     t.index ["chosen_by_id"], name: "index_needs_on_chosen_by_id"
     t.index ["updated_by_id"], name: "index_needs_on_updated_by_id"
   end
