@@ -3,7 +3,7 @@ class User < ApplicationRecord
 
   enum role: { help_seeker: 0, volunteer: 1, ngo: 2, admin: 3 }
 
-  has_one :address
+  has_one :address, as: :addressable
 
   has_one :testimonial
 
