@@ -1,6 +1,7 @@
 module Common
   module Entities
     class PublicUser < Grape::Entity
+      expose :id, documentation: { type: Integer }
       expose :first_name
       expose :last_name
       expose :role
@@ -11,6 +12,7 @@ module Common
     end
 
     class Address < Grape::Entity
+      expose :id, documentation: { type: Integer }
       expose :street_name
       expose :city
       expose :county
@@ -37,6 +39,7 @@ module Common
     class PublicReview < Grape::Entity
       root :reviews, :review
 
+      expose :id, documentation: { type: Integer }
       expose :stars, documentation: { type: Integer }
       expose :comment
     end
@@ -47,12 +50,14 @@ module Common
     end
 
     class Suggestion < Grape::Entity
+      expose :id, documentation: { type: Integer }
       expose :email
       expose :name
       expose :message
     end
 
     class Testimonial < Grape::Entity
+      expose :id, documentation: { type: Integer }
       expose :user, using: PublicUser
       expose :message
     end
@@ -62,6 +67,7 @@ module Common
     end
 
     class SpecialCase < Grape::Entity
+      expose :id, documentation: { type: Integer }
       expose :description
       expose :status
       expose :added_by, using: PublicUser
