@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_17_075835) do
+ActiveRecord::Schema.define(version: 2020_11_22_141324) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "street_name"
@@ -21,15 +21,15 @@ ActiveRecord::Schema.define(version: 2020_11_17_075835) do
     t.string "coordinates"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "user_id"
-    t.index ["user_id"], name: "index_addresses_on_user_id"
+    t.bigint "addressable_id"
+    t.string "addressable_type"
+    t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
   end
 
   create_table "needs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.text "description"
     t.boolean "deleted", default: false
     t.integer "status", default: 0
-    t.text "contact_info"
     t.string "contact_phone_number"
     t.bigint "added_by_id", null: false
     t.bigint "chosen_by_id"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 2020_11_17_075835) do
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "status_updated_at"
     t.bigint "updated_by_id"
+    t.text "contact_info"
     t.index ["added_by_id"], name: "index_needs_on_added_by_id"
     t.index ["chosen_by_id"], name: "index_needs_on_chosen_by_id"
     t.index ["updated_by_id"], name: "index_needs_on_updated_by_id"
