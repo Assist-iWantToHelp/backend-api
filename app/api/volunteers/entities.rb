@@ -15,8 +15,10 @@ module Volunteers
     end
 
     class RecommendedNeed < Need
-      expose :contact_info
+      expose :contact_first_name
+      expose :contact_last_name
       expose :contact_phone_number
+      expose :address, using: Common::Entities::Address
       expose :chosen_by, using: Volunteer, expose_nil: true
     end
 
