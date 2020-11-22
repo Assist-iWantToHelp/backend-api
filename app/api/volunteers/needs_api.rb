@@ -12,7 +12,8 @@ module Volunteers
         ]
       end
       get do
-        needs = Need.opened.where.not(added_by: current_user) # TODO: - search by proximity or other filter
+        # TODO: - search by proximity or other filter
+        needs = Need.opened.where.not(added_by: current_user).or(Need.where(chosen_by: current_user))
         present needs, with: Entities::Need
       end
 
