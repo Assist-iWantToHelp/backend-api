@@ -9,16 +9,21 @@ module Volunteers
       expose :email
     end
 
+    class BasicNeed < Common::Entities::BasicNeed
+      expose :person_name
+      expose :street_name
+    end
+
     class Need < Common::Entities::Need
       expose :added_by, using: HelpSeeker, expose_nil: true
+      expose :contact_first_name
+      expose :contact_last_name
+      expose :contact_phone_number
+      expose :address, using: Common::Entities::Address, expose_nil: true
       expose :reviews, using: Common::Entities::Review, expose_nil: true
     end
 
     class RecommendedNeed < Need
-      expose :contact_first_name
-      expose :contact_last_name
-      expose :contact_phone_number
-      expose :address, using: Common::Entities::Address
       expose :chosen_by, using: Volunteer, expose_nil: true
     end
 

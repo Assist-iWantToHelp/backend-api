@@ -17,6 +17,16 @@ class Need < ApplicationRecord
 
   scope :opened, -> { where(status: statuses[:opened]) }
 
+  def person_name
+    return "#{contact_first_name} #{contact_last_name}" if contact_first_name
+
+    "#{added_by&.first_name} #{added_by&.last_name}"
+  end
+
+  def street_name
+    address&.street_name || added_by.address&.street_name
+  end
+
   private
 
   def set_status_updates

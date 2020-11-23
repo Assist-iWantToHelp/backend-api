@@ -8,13 +8,13 @@ module Volunteers
       desc "Other's needs" do
         tags %w[needs]
         http_codes [
-          { code: 200, model: Entities::Need, message: "Other's needs list" }
+          { code: 200, model: Entities::BasicNeed, message: "Other's needs list" }
         ]
       end
       get do
         # TODO: - search by proximity or other filter
         needs = Need.opened.where.not(added_by: current_user).or(Need.where(chosen_by: current_user))
-        present needs, with: Entities::Need
+        present needs, with: Entities::BasicNeed
       end
 
       route_param :id do
@@ -26,7 +26,7 @@ module Volunteers
           ]
         end
         get do
-          need = Need.opened.where.not(added_by: current_user).find(params[:id])
+          need = Need.opened.where.not(added_by: current_user).or(Need.where(chosen_by: current_user)).find(params[:id])
           present need, with: Entities::Need
         end
 
