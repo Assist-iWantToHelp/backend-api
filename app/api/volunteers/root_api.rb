@@ -23,6 +23,7 @@ module Volunteers
     mount Common::ProfileApi
     mount HelpedPeopleApi
     mount NeedsApi
+    mount RecommendedNeedsApi
     mount TestimonialsApi
 
     add_swagger_documentation(

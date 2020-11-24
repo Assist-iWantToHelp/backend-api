@@ -8,7 +8,7 @@ FactoryBot.define do
     email { Faker::Internet.email }
     password { 'password' }
     password_confirmation { 'password' }
-    address { association :address, user: instance }
+    address { association :address }
 
     trait :as_help_seeker do
       role { User.roles[:help_seeker] }

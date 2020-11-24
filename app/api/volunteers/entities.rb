@@ -5,18 +5,30 @@ module Volunteers
       expose :cif
     end
 
-    class HelpSeeker < Common::Entities::User
+    class BasicHelpSeeker < Common::Entities::User
       expose :email
     end
 
+    class HelpSeeker < BasicHelpSeeker
+      expose :provided_reviews, using: Common::Entities::Review, expose_nil: true
+      expose :given_reviews, using: Common::Entities::Review, expose_nil: true
+    end
+
+    class BasicNeed < Common::Entities::BasicNeed
+      expose :person_name
+      expose :street_name
+    end
+
     class Need < Common::Entities::Need
-      expose :added_by, using: HelpSeeker, expose_nil: true
+      expose :added_by, using: BasicHelpSeeker, expose_nil: true
+      expose :contact_first_name
+      expose :contact_last_name
+      expose :contact_phone_number
+      expose :address, using: Common::Entities::Address, expose_nil: true
       expose :reviews, using: Common::Entities::Review, expose_nil: true
     end
 
     class RecommendedNeed < Need
-      expose :contact_info
-      expose :contact_phone_number
       expose :chosen_by, using: Volunteer, expose_nil: true
     end
 

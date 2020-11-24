@@ -17,7 +17,8 @@ module Volunteers
         end
       end
       post do
-        testimonial = current_user.testimonial.create!(params)
+        params[:user_id] = current_user.id
+        testimonial = Testimonial.create!(params)
         present testimonial, with: Entities::Testimonial
       end
 
