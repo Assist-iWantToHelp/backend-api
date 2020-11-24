@@ -33,6 +33,7 @@ class UsersController < ApplicationController
       :role,
       :password,
       :password_confirmation,
+      :description,
       address_attributes: %i[
         street_name
         city

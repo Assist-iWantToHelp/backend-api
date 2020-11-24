@@ -17,6 +17,7 @@ module Common
       expose :first_name
       expose :last_name
       expose :role
+      expose :description
     end
 
     class User < PublicUser

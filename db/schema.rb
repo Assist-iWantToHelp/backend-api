@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_22_150020) do
+ActiveRecord::Schema.define(version: 2020_11_24_083743) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "street_name"
@@ -115,6 +115,7 @@ ActiveRecord::Schema.define(version: 2020_11_22_150020) do
     t.integer "role"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "description"
   end
 
   add_foreign_key "needs", "users", column: "added_by_id"

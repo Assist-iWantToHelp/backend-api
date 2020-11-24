@@ -25,17 +25,20 @@ module Common
       end
       params do
         with(documentation: { in: 'body' }) do
-          optional :phone_number, type: String, desc: 'Phone number', allow_blank: false
-          optional :first_name, type: String, desc: 'First name', allow_blank: false
-          optional :last_name, type: String, desc: 'Last name', allow_blank: false
-          optional :email, type: String, desc: 'Email', allow_blank: false
-          optional :address, type: Hash do
-            optional :street_name, type: String, allow_blank: false
-            optional :city, type: String, allow_blank: false
-            optional :county, type: String, allow_blank: false
-            optional :postal_code, type: String, allow_blank: false
-            optional :coordinates, type: String, allow_blank: false
-            optional :details, type: String, allow_blank: false
+          requires :profile, type: Hash do
+            optional :phone_number, type: String, desc: 'Phone number', allow_blank: false
+            optional :first_name, type: String, desc: 'First name', allow_blank: false
+            optional :last_name, type: String, desc: 'Last name', allow_blank: false
+            optional :email, type: String, desc: 'Email', allow_blank: false
+            optional :description, type: String, desc: 'Description', allow_blank: false
+            optional :address, type: Hash do
+              optional :street_name, type: String, allow_blank: false
+              optional :city, type: String, allow_blank: false
+              optional :county, type: String, allow_blank: false
+              optional :postal_code, type: String, allow_blank: false
+              optional :coordinates, type: String, allow_blank: false
+              optional :details, type: String, allow_blank: false
+            end
           end
         end
       end
@@ -43,7 +46,7 @@ module Common
 
       put do
         profile = current_user
-        profile.update!(permitted_params)
+        profile.update!(permitted_params[:profile])
         present profile, with: Entities::Profile
       end
     end
