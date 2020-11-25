@@ -5,6 +5,8 @@ class Need < ApplicationRecord
   belongs_to :chosen_by, class_name: 'User', optional: true
   belongs_to :updated_by, class_name: 'User', optional: true
 
+  belongs_to :category, optional: true
+
   has_one :address, as: :addressable
 
   has_many :reviews
