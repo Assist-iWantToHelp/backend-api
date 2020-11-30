@@ -8,7 +8,7 @@ module Common
         ]
       end
       get do
-        volunteers = User.volunteers.includes(:given_reviews)
+        volunteers = User.volunteers.includes(:received_reviews)
         present volunteers, with: Entities::Volunteer
       end
     end

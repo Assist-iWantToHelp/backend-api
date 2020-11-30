@@ -18,11 +18,12 @@ module Common
       expose :last_name
       expose :role
       expose :description
+      expose :received_rating, as: :rating, documentation: { type: Float }
+      expose :address, using: Address, expose_nil: true
     end
 
     class User < PublicUser
       expose :phone_number
-      expose :address, using: Address, expose_nil: true
     end
 
     class Profile < User
@@ -71,7 +72,7 @@ module Common
     end
 
     class Volunteer < PublicUser
-      expose :given_reviews, using: PublicReview, as: :reviews
+      expose :received_reviews, using: PublicReview, as: :reviews
     end
 
     class SpecialCase < Grape::Entity
