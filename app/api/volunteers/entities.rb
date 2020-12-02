@@ -38,5 +38,8 @@ module Volunteers
       expose :id, documentation: { type: Integer }
       expose :message
     end
+
+    class SpecialCase < Common::Entities::SpecialCase
+    end
   end
 end

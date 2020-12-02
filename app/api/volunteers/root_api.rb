@@ -24,6 +24,7 @@ module Volunteers
     mount HelpedPeopleApi
     mount NeedsApi
     mount RecommendedNeedsApi
+    mount SpecialCasesApi
     mount TestimonialsApi
 
     add_swagger_documentation(
