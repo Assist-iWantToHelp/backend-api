@@ -64,7 +64,8 @@ module Volunteers
           http_codes [
             { code: 200, model: Entities::RecommendedNeed, message: 'Recommended Need description' },
             { code: 400, message: 'Params are invalid' },
-            { code: 404, message: 'Need not found' }
+            { code: 404, message: 'Need not found' },
+            { code: 409, message: 'Need is not opened anymore' }
           ]
         end
         params do
@@ -94,8 +95,7 @@ module Volunteers
             need.update!(permitted_params)
             present need, with: Entities::RecommendedNeed
           else
-            status :bad_request
-            error!('Need is not opened anymore', 400)
+            error!('Need is not opened anymore', 409)
           end
         end
 
@@ -103,8 +103,8 @@ module Volunteers
           tags %w[recommended_needs]
           http_codes [
             { code: 204, message: 'No content' },
-            { code: 400, message: 'Need is not opened anymore' },
-            { code: 404, message: 'Need not found' }
+            { code: 404, message: 'Need not found' },
+            { code: 409, message: 'Need is not opened anymore' }
           ]
         end
         delete do
@@ -113,8 +113,7 @@ module Volunteers
             need.update!(deleted: true, updated_by: current_user, status_updated_at: DateTime.current)
             status :no_content
           else
-            status :bad_request
-            error!('Need is not opened anymore', 400)
+            error!('Need is not opened anymore', 409)
           end
         end
 
@@ -124,7 +123,7 @@ module Volunteers
             { code: 201, model: Entities::RecommendedNeed, message: 'Need confirmed and review added' },
             { code: 400, message: 'Params are invalid' },
             { code: 404, message: 'Need not found' },
-            { code: 409, message: 'Conflict' }
+            { code: 409, message: 'Need is not completed' }
           ]
         end
         params do
@@ -153,8 +152,7 @@ module Volunteers
 
             present need, with: Entities::RecommendedNeed
           else
-            status :bad_request
-            error!('Need is not completed', 400)
+            error!('Need is not completed', 409)
           end
         end
       end

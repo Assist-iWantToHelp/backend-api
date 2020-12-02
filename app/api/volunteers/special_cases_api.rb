@@ -5,23 +5,23 @@ module Volunteers
     before { authorize_user_role! }
 
     resource :special_cases do
-      desc "My special cases" do
+      desc 'My special cases' do
         tags %w[special_cases]
         http_codes [
-          { code: 200, model: Entities::SpecialCase, message: "My special cases list" }
+          { code: 200, model: Entities::SpecialCase, message: 'My special cases list' }
         ]
       end
       get do
-        special_cases = SpecialCase.all.where(user: current_user, deleted: false)
+        special_cases = current_user.special_cases.not_deleted
         present special_cases, with: Entities::SpecialCase
       end
 
       desc 'Create new special case' do
         tags %w[special_cases]
         http_codes [
-                       { code: 201, model: Entities::SpecialCase, message: 'Special case created' },
-                       { code: 400, message: 'Params are invalid' }
-                   ]
+          { code: 201, model: Entities::SpecialCase, message: 'Special case created' },
+          { code: 400, message: 'Params are invalid' }
+        ]
       end
       params do
         with(documentation: { in: 'body' }) do
@@ -42,16 +42,18 @@ module Volunteers
           ]
         end
         get do
-          special_case = SpecialCase.all.where(user: current_user, deleted: false).find(params[:id])
+          special_case = current_user.special_cases.not_deleted.find(params[:id])
           present special_case, with: Entities::SpecialCase
         end
 
         desc 'Edit specific special case' do
           tags %w[special_cases]
           http_codes [
-                         { code: 200, model: Entities::SpecialCase, message: 'Special case updated' },
-                         { code: 404, message: 'Special case not found' }
-                     ]
+            { code: 200, model: Entities::SpecialCase, message: 'Special case updated' },
+            { code: 400, message: 'Params are invalid' },
+            { code: 404, message: 'Special case not found' },
+            { code: 409, message: 'Special case is not opened anymore' }
+          ]
         end
         params do
           with(documentation: { in: 'body' }) do
@@ -59,14 +61,13 @@ module Volunteers
           end
         end
         put do
-          special_case = SpecialCase.all.where(user: current_user, deleted: false).find(params[:id])
+          special_case = current_user.special_cases.not_deleted.find(params[:id])
 
           if special_case.opened?
             special_case.update!(params)
             present special_case, with: Entities::SpecialCase
           else
-            status :bad_request
-            error!('Need is not opened anymore', 400)
+            error!('Special case is not opened anymore', 409)
           end
         end
 
@@ -74,8 +75,8 @@ module Volunteers
           tags %w[special_cases]
           http_codes [
             { code: 204, message: 'No content' },
-            { code: 400, message: 'Special case is not opened anymore' },
-            { code: 404, message: 'Special case not found' }
+            { code: 404, message: 'Special case not found' },
+            { code: 409, message: 'Special case is not opened anymore' }
           ]
         end
         delete do
@@ -84,8 +85,7 @@ module Volunteers
             special_case.update!(deleted: true)
             status :no_content
           else
-            status :bad_request
-            error!('Special case is not opened anymore', 400)
+            error!('Special case is not opened anymore', 409)
           end
         end
       end

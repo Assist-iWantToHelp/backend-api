@@ -8,4 +8,6 @@ class SpecialCase < ApplicationRecord
   has_many :user_special_cases
 
   validates :description, presence: true
+
+  scope :not_deleted, -> { where(deleted: false) }
 end

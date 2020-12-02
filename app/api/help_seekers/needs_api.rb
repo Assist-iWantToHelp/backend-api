@@ -70,7 +70,6 @@ module HelpSeekers
             need.update!(params)
             present need, with: Entities::Need
           else
-            status :bad_request
             error!('Need is not opened anymore', 400)
           end
         end
@@ -89,7 +88,6 @@ module HelpSeekers
             need.update!(deleted: true, updated_by: current_user, status_updated_at: DateTime.current)
             status :no_content
           else
-            status :bad_request
             error!('Need is not opened anymore', 400)
           end
         end
@@ -100,7 +98,7 @@ module HelpSeekers
             { code: 201, model: Entities::Need, message: 'Need confirmed and review added' },
             { code: 400, message: 'Params are invalid' },
             { code: 404, message: 'Need not found' },
-            { code: 409, message: 'Conflict' }
+            { code: 409, message: 'Need is not completed' }
           ]
         end
         params do
@@ -125,8 +123,7 @@ module HelpSeekers
 
             present need, with: Entities::Need
           else
-            status :bad_request
-            error!('Need is not completed', 400)
+            error!('Need is not completed', 409)
           end
         end
       end

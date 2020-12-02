@@ -8,7 +8,8 @@ module Volunteers
       desc 'Add testimonial' do
         tags %w[testimonials]
         http_codes [
-          { code: 200, model: Entities::Testimonial, message: 'Testimonial list' }
+          { code: 201, model: Entities::Testimonial, message: 'Testimonial created' },
+          { code: 400, message: 'Params are invalid' }
         ]
       end
       params do
@@ -26,7 +27,7 @@ module Volunteers
         tags %w[testimonials]
         http_codes [
           { code: 200, model: Entities::Testimonial, message: 'Testimonial details' },
-          { code: 404, message: 'Need not found' }
+          { code: 404, message: 'Testimonial not found' }
         ]
       end
       get do
@@ -35,7 +36,7 @@ module Volunteers
         if testimonial
           present testimonial, with: Entities::Testimonial
         else
-          error!('Not Found', 404)
+          error!('Testimonial not found', 404)
         end
       end
     end
