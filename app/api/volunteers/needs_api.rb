@@ -52,7 +52,6 @@ module Volunteers
             # TODO: - create a service object to send notification
             present need, with: Entities::Need
           else
-            status :conflict
             error!('Need is chosen already', 409)
           end
         end
@@ -93,8 +92,7 @@ module Volunteers
             )
             present need, with: Entities::Need
           else
-            status :bad_request
-            error!('Need is not in progress', 400)
+            error!('Need is not in progress', 409)
           end
         end
       end

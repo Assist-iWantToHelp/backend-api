@@ -11,7 +11,7 @@ module Volunteers
 
     class HelpSeeker < BasicHelpSeeker
       expose :provided_reviews, using: Common::Entities::Review, expose_nil: true
-      expose :given_reviews, using: Common::Entities::Review, expose_nil: true
+      expose :received_reviews, using: Common::Entities::Review, expose_nil: true
     end
 
     class BasicNeed < Common::Entities::BasicNeed
@@ -37,6 +37,9 @@ module Volunteers
 
       expose :id, documentation: { type: Integer }
       expose :message
+    end
+
+    class SpecialCase < Common::Entities::SpecialCase
     end
   end
 end
