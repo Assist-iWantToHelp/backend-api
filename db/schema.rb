@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_25_165614) do
+ActiveRecord::Schema.define(version: 2020_11_24_083743) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "street_name"
@@ -24,12 +24,6 @@ ActiveRecord::Schema.define(version: 2020_11_25_165614) do
     t.bigint "addressable_id"
     t.string "addressable_type"
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
-  end
-
-  create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
-    t.string "name", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "needs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -46,10 +40,8 @@ ActiveRecord::Schema.define(version: 2020_11_25_165614) do
     t.string "contact_first_name"
     t.string "contact_last_name"
     t.bigint "address_id"
-    t.bigint "category_id"
     t.index ["added_by_id"], name: "index_needs_on_added_by_id"
     t.index ["address_id"], name: "index_needs_on_address_id"
-    t.index ["category_id"], name: "index_needs_on_category_id"
     t.index ["chosen_by_id"], name: "index_needs_on_chosen_by_id"
     t.index ["updated_by_id"], name: "index_needs_on_updated_by_id"
   end
@@ -126,7 +118,6 @@ ActiveRecord::Schema.define(version: 2020_11_25_165614) do
     t.text "description"
   end
 
-  add_foreign_key "needs", "categories"
   add_foreign_key "needs", "users", column: "added_by_id"
   add_foreign_key "needs", "users", column: "chosen_by_id"
   add_foreign_key "needs", "users", column: "updated_by_id"

@@ -32,12 +32,6 @@ module Common
       expose :email
     end
 
-    class Category < Grape::Entity
-      root :categories, :category
-
-      expose :name
-    end
-
     class BasicNeed < Grape::Entity
       root :needs, :need
 
