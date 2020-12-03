@@ -16,7 +16,6 @@ class Need < ApplicationRecord
 
   accepts_nested_attributes_for :address
 
-  scope :opened, -> { where(status: statuses[:opened]) }
   scope :not_deleted, -> { where(deleted: false) }
 
   def person_name

@@ -8,7 +8,7 @@ module Common
         ]
       end
       get do
-        special_cases = SpecialCase.all
+        special_cases = SpecialCase.not_deleted
         present special_cases, with: Entities::SpecialCase
       end
     end

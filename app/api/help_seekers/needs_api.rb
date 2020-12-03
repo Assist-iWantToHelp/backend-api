@@ -12,7 +12,7 @@ module HelpSeekers
         ]
       end
       get do
-        needs = current_user.my_needs
+        needs = current_user.my_needs.not_deleted
         present needs, with: Entities::Need
       end
 
@@ -25,9 +25,11 @@ module HelpSeekers
       end
       params do
         with(documentation: { in: 'body' }) do
+          requires :category, type: String, desc: 'Category', values: Need.categories.keys
           requires :description, type: String, desc: 'Description', allow_blank: false
         end
       end
+
       post do
         need = current_user.my_needs.create!(params)
         present need, with: Entities::Need
@@ -42,7 +44,7 @@ module HelpSeekers
           ]
         end
         get do
-          need = current_user.my_needs.find(params[:id])
+          need = current_user.my_needs.not_deleted.find(params[:id])
           present need, with: Entities::Need
         end
 
@@ -51,26 +53,28 @@ module HelpSeekers
           http_codes [
             { code: 200, model: Entities::Need, message: 'Need description' },
             { code: 400, message: 'Params are invalid' },
-            { code: 404, message: 'Need not found' }
+            { code: 404, message: 'Need not found' },
+            { code: 409, message: 'Need is not opened anymore' }
           ]
         end
         params do
           with(documentation: { in: 'body' }) do
             optional :description, type: String, desc: 'Description', allow_blank: false
+            optional :category, type: String, desc: 'Category', allow_blank: false, values: Need.categories.keys
             optional :contact_info, type: String, desc: 'Contact info', allow_blank: false
             optional :contact_phone_number, type: String, desc: 'Contact phone number', allow_blank: false
           end
         end
         put do
-          need = current_user.my_needs.find(params[:id])
+          need = current_user.my_needs.not_deleted.find(params[:id])
 
           if need.opened?
             params[:status_updated_at] = DateTime.current
-            params[:updated_by] = current_user
+            params[:updated_by_id] = current_user.id
             need.update!(params)
             present need, with: Entities::Need
           else
-            error!('Need is not opened anymore', 400)
+            error!('Need is not opened anymore', 409)
           end
         end
 
@@ -78,17 +82,22 @@ module HelpSeekers
           tags %w[needs]
           http_codes [
             { code: 204, message: 'No content' },
-            { code: 400, message: 'Need is not opened anymore' },
+            { code: 409, message: 'Need is not opened anymore' },
             { code: 404, message: 'Need not found' }
           ]
         end
         delete do
-          need = current_user.my_needs.find(params[:id])
+          need = current_user.my_needs.not_deleted.find(params[:id])
+
           if need.opened?
-            need.update!(deleted: true, updated_by: current_user, status_updated_at: DateTime.current)
+            need.update!(
+              deleted: true,
+              updated_by_id: current_user.id,
+              status_updated_at: DateTime.current
+            )
             status :no_content
           else
-            error!('Need is not opened anymore', 400)
+            error!('Need is not opened anymore', 409)
           end
         end
 
@@ -110,7 +119,7 @@ module HelpSeekers
           end
         end
         post :close do
-          need = current_user.my_needs.includes(:reviews).find(params[:id])
+          need = current_user.my_needs.not_deleted.includes(:reviews).find(params[:id])
 
           if need.completed? && need.chosen_by
             review_params = params[:review].merge(
@@ -119,7 +128,11 @@ module HelpSeekers
             )
 
             need.reviews.create!(review_params)
-            need.update!(status: Need.statuses[:closed], status_updated_at: DateTime.current, updated_by: current_user)
+            need.update!(
+              status: Need.statuses[:closed],
+              status_updated_at: DateTime.current,
+              updated_by_id: current_user.id
+            )
 
             present need, with: Entities::Need
           else
