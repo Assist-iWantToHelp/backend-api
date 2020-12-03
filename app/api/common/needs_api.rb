@@ -8,7 +8,7 @@ module Common
         ]
       end
       get do
-        needs = Need.all
+        needs = Need.not_deleted
         present needs, with: Entities::Need
       end
     end

@@ -37,6 +37,7 @@ module Common
 
       expose :id, documentation: { type: Integer }
       expose :description
+      expose :category
       expose :status
       expose :status_updated_at, documentation: { type: DateTime }
     end
