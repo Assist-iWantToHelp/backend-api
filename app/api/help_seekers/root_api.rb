@@ -21,6 +21,7 @@ module HelpSeekers
     # end
 
     mount Common::ProfileApi
+    mount Common::DevicesApi
     mount NeedsApi
     mount VolunteersApi
 

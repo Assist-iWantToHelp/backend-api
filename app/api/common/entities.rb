@@ -82,5 +82,9 @@ module Common
       expose :status
       expose :added_by, using: PublicUser
     end
+
+    class Device < Grape::Entity
+      expose :signal_id
+    end
   end
 end
