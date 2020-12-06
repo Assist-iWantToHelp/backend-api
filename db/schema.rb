@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_03_131641) do
+ActiveRecord::Schema.define(version: 2020_12_06_215902) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "street_name"
@@ -24,6 +24,14 @@ ActiveRecord::Schema.define(version: 2020_12_03_131641) do
     t.bigint "addressable_id"
     t.string "addressable_type"
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
+  end
+
+  create_table "devices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "signal_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_devices_on_user_id"
   end
 
   create_table "needs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -54,6 +62,18 @@ ActiveRecord::Schema.define(version: 2020_12_03_131641) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
+  create_table "questionnaires", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "answear_1"
+    t.string "answear_2"
+    t.string "answear_3"
+    t.string "answear_4"
+    t.string "answear_5"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_questionnaires_on_user_id"
   end
 
   create_table "reviews", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -119,10 +139,12 @@ ActiveRecord::Schema.define(version: 2020_12_03_131641) do
     t.text "description"
   end
 
+  add_foreign_key "devices", "users"
   add_foreign_key "needs", "users", column: "added_by_id"
   add_foreign_key "needs", "users", column: "chosen_by_id"
   add_foreign_key "needs", "users", column: "updated_by_id"
   add_foreign_key "notifications", "users"
+  add_foreign_key "questionnaires", "users"
   add_foreign_key "reviews", "needs"
   add_foreign_key "reviews", "users", column: "given_to_id"
   add_foreign_key "reviews", "users", column: "provided_by_id"

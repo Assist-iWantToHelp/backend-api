@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_one :address, as: :addressable
 
   has_one :testimonial
+  has_one :questionnaire
 
   has_many :my_needs, class_name: 'Need', foreign_key: 'added_by_id'
   has_many :chosen_needs, class_name: 'Need', foreign_key: 'chosen_by_id'
