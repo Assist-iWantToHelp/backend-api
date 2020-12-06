@@ -23,6 +23,7 @@ module Volunteers
     mount Common::ProfileApi
     mount HelpedPeopleApi
     mount NeedsApi
+    mount QuestionnairesApi
     mount RecommendedNeedsApi
     mount SpecialCasesApi
     mount TestimonialsApi
