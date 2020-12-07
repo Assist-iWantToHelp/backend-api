@@ -1,11 +1,13 @@
 class Onesignal
   ONE_SIGNAL_API_URL = 'https://onesignal.com/api/v1/notifications'.freeze
 
-  class << self
-    def deliver_later(device_tokens, **payload)
-      delay.deliver(device_tokens, payload)
+  class TemplateNotFound < StandardError
+    def message
+      'Onesignal template not provided'
     end
+  end
 
+  class << self
     def deliver(device_tokens, **payload)
       return unless device_tokens.any?
 
@@ -24,18 +26,29 @@ class Onesignal
     private
 
     def api_auth
-      ENV.fetch('REST_API_KEY')
+      ONESIGNAL_API_KEY
     end
 
     def app_id
-      ENV.fetch('ONESIGNAL_APP_ID')
+      ONESIGNAL_APP_ID
     end
 
     def build_request_body(device_tokens, **payload)
+      template_key = payload.delete(:template_key)
+      template = get_template(template_key)
       body = payload_body(device_tokens, payload)
       body[:template_id] = template.template_id if template
 
       { app_id: app_id, content_available: true, **body }
+    end
+
+    def get_template(template_key = nil)
+      return unless template_key
+
+      template = NotificationTemplate.find_by(key: template_key)
+      raise TemplateNotFound unless template
+
+      template
     end
 
     def payload_body(device_tokens, **payload)
