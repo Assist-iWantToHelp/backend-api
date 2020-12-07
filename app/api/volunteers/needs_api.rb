@@ -51,7 +51,14 @@ module Volunteers
               updated_by_id: current_user.id,
               status_updated_at: DateTime.current
             )
-            # TODO: - create a service object to send notification
+
+            device_tokens = need.added_by&.devices&.pluck(:signal_id)
+            notification_payload = {
+              template_key: 'applied_need',
+              url: "#{ENV['FE_NEED_VIEW']}/#{need.id}"
+            }
+            Onesignal.deliver(device_tokens, notification_payload)
+
             present need, with: Entities::Need
           else
             error!('Need is chosen already', 409)

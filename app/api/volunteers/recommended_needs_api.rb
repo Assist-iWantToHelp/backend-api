@@ -44,6 +44,18 @@ module Volunteers
 
       post do
         need = current_user.my_needs.create!(permitted_params)
+
+        device_tokens = User.volunteers
+          .where.not(id: current_user.id)
+          .includes(:devices)
+          .map(&:devices).flatten
+          .pluck(:signal_id)
+        notification_payload = {
+          template_key: 'new_recommended_need',
+          url: "#{ENV['FE_RECOMMENDED_NEED_VIEW']}/#{need.id}"
+        }
+        Onesignal.deliver(device_tokens, notification_payload)
+
         present need, with: Entities::RecommendedNeed
       end
 
@@ -156,6 +168,13 @@ module Volunteers
               updated_by_id: current_user.id
             )
             need.reviews.create!(review_params)
+
+            device_tokens = need.chosen_by&.devices&.pluck(:signal_id)
+            notification_payload = {
+              template_key: 'confirmed_need',
+              url: "#{ENV['FE_RECOMMENDED_NEED_VIEW']}/#{need.id}"
+            }
+            Onesignal.deliver(device_tokens, notification_payload)
 
             present need, with: Entities::RecommendedNeed
           else
