@@ -52,6 +52,7 @@ module Common
       expose :id, documentation: { type: Integer }
       expose :stars, documentation: { type: Integer }
       expose :comment
+      expose :created_at, documentation: { type: DateTime }
     end
 
     class Review < PublicReview
