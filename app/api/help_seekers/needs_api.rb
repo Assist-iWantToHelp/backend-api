@@ -32,6 +32,14 @@ module HelpSeekers
 
       post do
         need = current_user.my_needs.create!(params)
+
+        device_tokens = User.volunteers.includes(:devices).map(&:devices).flatten.pluck(:signal_id)
+        notification_payload = {
+          template_key: 'applied_need',
+          url: "#{ENV['FE_NEED_VIEW']}/#{need.id}"
+        }
+        Onesignal.deliver(device_tokens, notification_payload)
+
         present need, with: Entities::Need
       end
 
@@ -133,6 +141,13 @@ module HelpSeekers
               status_updated_at: DateTime.current,
               updated_by_id: current_user.id
             )
+
+            device_tokens = need.chosen_by&.devices&.pluck(:signal_id)
+            notification_payload = {
+              template_key: 'confirmed_need',
+              url: "#{ENV['FE_NEED_VIEW']}/#{need.id}"
+            }
+            Onesignal.deliver(device_tokens, notification_payload)
 
             present need, with: Entities::Need
           else
