@@ -1,6 +1,7 @@
 module HelpSeekers
   module Entities
     class Volunteer < Common::Entities::User
+      expose :received_reviews, using: Common::Entities::PublicReview, as: :reviews
     end
 
     class Need < Common::Entities::Need
