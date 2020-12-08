@@ -8,13 +8,13 @@ module Volunteers
 
     def week_aggregate_data(array)
       init_hash = {
-        'Sunday' => 0,
         'Monday' => 0,
         'Tuesday' => 0,
         'Wednesday' => 0,
         'Thursday' => 0,
         'Friday' => 0,
-        'Saturday' => 0
+        'Saturday' => 0,
+        'Sunday' => 0,
       }
       array.each_with_object(init_hash) { |need, hash| hash[need.status_updated_at.strftime('%A')] += 1 }
     end
