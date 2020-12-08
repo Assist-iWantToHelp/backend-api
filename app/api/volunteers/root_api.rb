@@ -20,6 +20,7 @@ module Volunteers
     #   ENV['SWAGGER_USERNAME'] == username && ENV['SWAGGER_PASSWORD'] == password
     # end
 
+    mount ChartsApi
     mount Common::ProfileApi
     mount HelpedPeopleApi
     mount NeedsApi
