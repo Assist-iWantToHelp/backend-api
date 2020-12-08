@@ -21,6 +21,7 @@ module Volunteers
     # end
 
     mount Common::ProfileApi
+    mount Common::DevicesApi
     mount HelpedPeopleApi
     mount NeedsApi
     mount QuestionnairesApi

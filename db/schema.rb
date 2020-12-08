@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_06_215902) do
+ActiveRecord::Schema.define(version: 2020_12_07_104954) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "street_name"
@@ -53,6 +53,15 @@ ActiveRecord::Schema.define(version: 2020_12_06_215902) do
     t.index ["address_id"], name: "index_needs_on_address_id"
     t.index ["chosen_by_id"], name: "index_needs_on_chosen_by_id"
     t.index ["updated_by_id"], name: "index_needs_on_updated_by_id"
+  end
+
+  create_table "notification_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "template_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["key"], name: "index_notification_templates_on_key", unique: true
+    t.index ["template_id"], name: "index_notification_templates_on_template_id", unique: true
   end
 
   create_table "notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|

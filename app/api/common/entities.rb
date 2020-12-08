@@ -52,6 +52,7 @@ module Common
       expose :id, documentation: { type: Integer }
       expose :stars, documentation: { type: Integer }
       expose :comment
+      expose :created_at, documentation: { type: DateTime }
     end
 
     class Review < PublicReview
@@ -81,6 +82,10 @@ module Common
       expose :description
       expose :status
       expose :added_by, using: PublicUser
+    end
+
+    class Device < Grape::Entity
+      expose :signal_id
     end
   end
 end

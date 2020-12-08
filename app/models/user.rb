@@ -18,6 +18,7 @@ class User < ApplicationRecord
   has_many :notifications
   has_many :user_special_cases
   has_many :special_cases
+  has_many :devices
 
   validates :phone_number, presence: true, uniqueness: true
   validates :first_name, presence: true
