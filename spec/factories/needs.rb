@@ -4,6 +4,7 @@ FactoryBot.define do
   factory :need do
     added_by { FactoryBot.create(:user, :as_help_seeker) }
     description { Faker::Lorem.sentence }
+    category { Need.categories[:others] }
 
     trait :in_progress do
       chosen_by { FactoryBot.create(:user, :as_volunteer) }
@@ -13,7 +14,7 @@ FactoryBot.define do
     end
 
     trait :recommended do
-      added_by { FactoryBot.create(:user, :volunteer) }
+      added_by { FactoryBot.create(:user, :as_volunteer) }
       contact_first_name { Faker::Name.first_name }
       contact_last_name { Faker::Name.last_name }
       contact_phone_number { Faker::PhoneNumber.cell_phone }

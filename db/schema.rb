@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_24_083743) do
+ActiveRecord::Schema.define(version: 2020_12_07_104954) do
 
   create_table "addresses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "street_name"
@@ -24,6 +24,14 @@ ActiveRecord::Schema.define(version: 2020_11_24_083743) do
     t.bigint "addressable_id"
     t.string "addressable_type"
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
+  end
+
+  create_table "devices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "signal_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_devices_on_user_id"
   end
 
   create_table "needs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -40,10 +48,20 @@ ActiveRecord::Schema.define(version: 2020_11_24_083743) do
     t.string "contact_first_name"
     t.string "contact_last_name"
     t.bigint "address_id"
+    t.integer "category"
     t.index ["added_by_id"], name: "index_needs_on_added_by_id"
     t.index ["address_id"], name: "index_needs_on_address_id"
     t.index ["chosen_by_id"], name: "index_needs_on_chosen_by_id"
     t.index ["updated_by_id"], name: "index_needs_on_updated_by_id"
+  end
+
+  create_table "notification_templates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "template_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["key"], name: "index_notification_templates_on_key", unique: true
+    t.index ["template_id"], name: "index_notification_templates_on_template_id", unique: true
   end
 
   create_table "notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -118,6 +136,7 @@ ActiveRecord::Schema.define(version: 2020_11_24_083743) do
     t.text "description"
   end
 
+  add_foreign_key "devices", "users"
   add_foreign_key "needs", "users", column: "added_by_id"
   add_foreign_key "needs", "users", column: "chosen_by_id"
   add_foreign_key "needs", "users", column: "updated_by_id"

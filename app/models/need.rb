@@ -1,5 +1,6 @@
 class Need < ApplicationRecord
   enum status: { opened: 0, in_progress: 1, completed: 2, closed: 3 }
+  enum category: { food: 0, drugs: 1, others: 2 }
 
   belongs_to :added_by, class_name: 'User'
   belongs_to :chosen_by, class_name: 'User', optional: true
@@ -15,7 +16,7 @@ class Need < ApplicationRecord
 
   accepts_nested_attributes_for :address
 
-  scope :opened, -> { where(status: statuses[:opened]) }
+  scope :not_deleted, -> { where(deleted: false) }
 
   def person_name
     return "#{contact_first_name} #{contact_last_name}" if contact_first_name

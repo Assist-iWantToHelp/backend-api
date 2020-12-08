@@ -13,7 +13,8 @@ module Volunteers
       end
       get do
         # TODO: - search by proximity or other filter
-        needs = Need.opened.where.not(added_by: current_user).or(Need.where(chosen_by: current_user))
+        needs = Need.not_deleted.opened.where.not(added_by: current_user)
+          .or(Need.not_deleted.where(chosen_by: current_user))
         present needs, with: Entities::BasicNeed
       end
 
@@ -26,7 +27,8 @@ module Volunteers
           ]
         end
         get do
-          need = Need.opened.where.not(added_by: current_user).or(Need.where(chosen_by: current_user)).find(params[:id])
+          need = Need.not_deleted.opened.where.not(added_by: current_user)
+            .or(Need.not_deleted.where(chosen_by: current_user)).find(params[:id])
           present need, with: Entities::Need
         end
 
@@ -40,16 +42,23 @@ module Volunteers
           ]
         end
         post :apply do
-          need = Need.opened.where.not(added_by: current_user).find(params[:id])
+          need = Need.not_deleted.opened.where.not(added_by: current_user).find(params[:id])
 
           if need.chosen_by.blank?
             need.update_attributes(
               status: Need.statuses[:in_progress],
-              chosen_by: current_user,
-              updated_by: current_user,
+              chosen_by_id: current_user.id,
+              updated_by_id: current_user.id,
               status_updated_at: DateTime.current
             )
-            # TODO: - create a service object to send notification
+
+            device_tokens = need.added_by&.devices&.pluck(:signal_id)
+            notification_payload = {
+              template_key: 'applied_need',
+              url: "#{ENV['FE_NEED_VIEW']}/#{need.id}"
+            }
+            Onesignal.deliver(device_tokens, notification_payload)
+
             present need, with: Entities::Need
           else
             error!('Need is chosen already', 409)
@@ -74,7 +83,7 @@ module Volunteers
           end
         end
         post :completed do
-          need = current_user.chosen_needs.find(params[:id])
+          need = current_user.chosen_needs.not_deleted.find(params[:id])
 
           if need.in_progress?
             if params[:review]
@@ -88,7 +97,7 @@ module Volunteers
             need.update!(
               status: Need.statuses[:completed],
               status_updated_at: DateTime.current,
-              updated_by: current_user
+              updated_by_id: current_user.id
             )
             present need, with: Entities::Need
           else

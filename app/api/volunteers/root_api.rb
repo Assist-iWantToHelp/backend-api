@@ -22,6 +22,7 @@ module Volunteers
 
     mount ChartsApi
     mount Common::ProfileApi
+    mount Common::DevicesApi
     mount HelpedPeopleApi
     mount NeedsApi
     mount RecommendedNeedsApi
