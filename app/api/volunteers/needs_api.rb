@@ -53,10 +53,12 @@ module Volunteers
             )
 
             device_tokens = need.added_by&.devices&.pluck(:signal_id)
-            notification_payload = {
-              template_key: 'applied_need',
-              url: "#{ENV['FE_NEED_VIEW']}/#{need.id}"
-            }
+            notification_payload = { template_key: 'applied_need' }
+            if need.added_by.help_seeker?
+              notification_payload[:data] = { need_id: need.id }
+            else
+              notification_payload[:url] = "#{ENV['FE_NEED_VIEW']}/#{need.id}"
+            end
             Onesignal.deliver(device_tokens, notification_payload)
 
             present need, with: Entities::Need
