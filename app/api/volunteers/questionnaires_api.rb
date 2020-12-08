@@ -22,8 +22,10 @@ module Volunteers
         end
       end
       post do
-        params[:user_id] = current_user.id
-        testimonial = Questionnaire.create!(params) # encrpyt answears
+        encrypted_params = Paillier::EncryptParams.call(params)
+        encrypted_params[:user_id] = current_user.id
+
+        Questionnaire.create!(encrypted_params)
         status :created
       end
     end
