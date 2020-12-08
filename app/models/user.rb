@@ -37,4 +37,31 @@ class User < ApplicationRecord
     total_stars = received_reviews.map(&:stars).reduce(:+).to_f
     total_stars / received_reviews.count
   end
+
+  def questionnaire_completed
+    questionnaire ? true : false
+  end
+
+  def trusted_volunteer
+    questionnaire_completed && confidence_mean >= TRUST_THRESHOLD
+  end
+
+  private
+
+  TRUST_THRESHOLD = 3.5
+
+  def public_key
+    Paillier::PublicKey.from_s(ENV['PAILLIER_PUBLIC'])
+  end
+
+  def private_key
+    Paillier::PrivateKey.from_s(ENV['PAILLIER_PRIVATE'])
+  end
+
+  def confidence_mean
+    return 0 unless questionnaire
+
+    total = Paillier.decrypt(private_key, public_key, questionnaire&.total).to_i
+    total / 5.0
+  end
 end
