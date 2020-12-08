@@ -35,7 +35,7 @@ module HelpSeekers
 
         device_tokens = User.volunteers.includes(:devices).map(&:devices).flatten.pluck(:signal_id)
         notification_payload = {
-          template_key: 'applied_need',
+          template_key: 'help_seeker_need',
           url: "#{ENV['FE_NEED_VIEW']}/#{need.id}"
         }
         Onesignal.deliver(device_tokens, notification_payload)
