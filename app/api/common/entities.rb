@@ -30,6 +30,8 @@ module Common
       root :profiles, :profile
 
       expose :email
+      expose :questionnaire_completed, if: ->(user, _) { user.volunteer? }, documentation: { type: 'boolean' }
+      expose :trusted_volunteer, if: ->(user, _) { user.volunteer? }, documentation: { type: 'boolean' }
     end
 
     class BasicNeed < Grape::Entity

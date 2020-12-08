@@ -25,6 +25,7 @@ module Volunteers
     mount Common::DevicesApi
     mount HelpedPeopleApi
     mount NeedsApi
+    mount QuestionnairesApi
     mount RecommendedNeedsApi
     mount SpecialCasesApi
     mount TestimonialsApi
