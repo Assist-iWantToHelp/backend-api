@@ -74,11 +74,12 @@ ActiveRecord::Schema.define(version: 2020_12_07_104954) do
   end
 
   create_table "questionnaires", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
-    t.string "answear_1"
-    t.string "answear_2"
-    t.string "answear_3"
-    t.string "answear_4"
-    t.string "answear_5"
+    t.text "answear_1"
+    t.text "answear_2"
+    t.text "answear_3"
+    t.text "answear_4"
+    t.text "answear_5"
+    t.text "total"
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
