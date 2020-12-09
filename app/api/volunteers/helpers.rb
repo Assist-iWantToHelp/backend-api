@@ -14,7 +14,7 @@ module Volunteers
         'Thursday' => 0,
         'Friday' => 0,
         'Saturday' => 0,
-        'Sunday' => 0,
+        'Sunday' => 0
       }
       array.each_with_object(init_hash) { |need, hash| hash[need.status_updated_at.strftime('%A')] += 1 }
     end

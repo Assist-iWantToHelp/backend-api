@@ -8,7 +8,7 @@ module Common
         ]
       end
       get do
-        volunteers = User.volunteers.includes(:received_reviews)
+        volunteers = User.volunteers.includes(:received_reviews).sort_by(&:received_rating).reverse
         present volunteers, with: Entities::Volunteer
       end
     end
