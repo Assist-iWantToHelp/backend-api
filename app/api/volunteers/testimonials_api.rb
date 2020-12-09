@@ -36,7 +36,7 @@ module Volunteers
         if testimonial
           present testimonial, with: Entities::Testimonial
         else
-          error!('Testimonial not found', 404)
+          { testimonial: {} }
         end
       end
     end
