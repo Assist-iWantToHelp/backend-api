@@ -12,14 +12,15 @@ module Volunteers
         ]
       end
       get :all_needs do
-        chart_data = Need.where(deleted: false)
+        chart_data = Need.not_deleted
           .select(:status, :status_updated_at)
           .group_by(&:status)
           .transform_values { |v| week_aggregate_data(v) }
           .transform_values(&:values)
         chart_data['completed'] = completed_value(chart_data)
-        chart_data['deleted'] = week_aggregate_data(Need.where(deleted: true)
-          .select(:status, :status_updated_at)).values
+        chart_data['deleted'] = week_aggregate_data(
+          Need.not_deleted.select(:status, :status_updated_at)
+        ).values
         chart_data['in_progress'] ||= Array.new(7, 0)
         chart_data['opened'] ||= Array.new(7, 0)
 
@@ -33,16 +34,19 @@ module Volunteers
         ]
       end
       get :user_needs do
-        chart_data = current_user.chosen_needs.where(deleted: false)
+        chart_data = current_user.chosen_needs.not_deleted
           .select(:status, :status_updated_at)
           .group_by(&:status)
           .transform_values { |v| week_aggregate_data(v) }
           .transform_values(&:values)
         chart_data['completed'] = completed_value(chart_data)
-        chart_data['deleted'] = week_aggregate_data(current_user.chosen_needs
-          .where(deleted: true).select(:status, :status_updated_at)).values
+        chart_data['deleted'] = week_aggregate_data(
+          current_user.chosen_needs.where(deleted: true).select(:status, :status_updated_at)
+        ).values
         chart_data['in_progress'] ||= Array.new(7, 0)
-        chart_data['opened'] ||= Array.new(7, 0)
+        chart_data['opened'] = week_aggregate_data(
+          Need.not_deleted.opened.where.not(added_by: current_user).select(:status, :status_updated_at)
+        ).values
 
         { 'user_needs' => chart_data }
       end
@@ -54,14 +58,15 @@ module Volunteers
         ]
       end
       get :user_recomended_needs do
-        chart_data = current_user.my_needs.where(deleted: false)
+        chart_data = current_user.my_needs.not_deleted
           .select(:status, :status_updated_at)
           .group_by(&:status)
           .transform_values { |v| week_aggregate_data(v) }
           .transform_values(&:values)
         chart_data['completed'] = completed_value(chart_data)
-        chart_data['deleted'] = week_aggregate_data(current_user.my_needs
-          .where(deleted: true).select(:status, :status_updated_at)).values
+        chart_data['deleted'] = week_aggregate_data(
+          current_user.my_needs.not_deleted.select(:status, :status_updated_at)
+        ).values
         chart_data['in_progress'] ||= Array.new(7, 0)
         chart_data['opened'] ||= Array.new(7, 0)
 

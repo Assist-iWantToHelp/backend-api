@@ -52,7 +52,7 @@ module Volunteers
           .pluck(:signal_id)
         notification_payload = {
           template_key: 'new_recommended_need',
-          url: "#{ENV['FE_RECOMMENDED_NEED_VIEW']}/#{need.id}"
+          url: "#{ENV['FE_NEED_VIEW']}/#{need.id}"
         }
         Onesignal.deliver(device_tokens, notification_payload)
 
@@ -172,7 +172,7 @@ module Volunteers
             device_tokens = need.chosen_by&.devices&.pluck(:signal_id)
             notification_payload = {
               template_key: 'confirmed_need',
-              url: "#{ENV['FE_RECOMMENDED_NEED_VIEW']}/#{need.id}"
+              url: "#{ENV['FE_NEED_VIEW']}/#{need.id}"
             }
             Onesignal.deliver(device_tokens, notification_payload)
 
